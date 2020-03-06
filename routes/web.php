@@ -23,4 +23,15 @@ Route::prefix('admin')->group(function(){
     Route::get('login','Admin\LoginController@index')->name('admin.login');
     Route::post('login','Admin\LoginController@check')->name('admin.login');
 
+    
+    //退出登录
+    Route::get('logout','Admin\LoginController@logout')->name('admin.logout');
+    
+    //受保护的后台路由列表
+    Route::middleware(['adminLoginCheck'])->group(function(){
+    //后台中心首页
+    Route::get('index','Admin\IndexController@index')->name('admin.index');
+
+
+    });
 });
