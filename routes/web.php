@@ -22,16 +22,33 @@ Route::prefix('admin')->group(function(){
     //管理员登录
     Route::get('login','Admin\LoginController@index')->name('admin.login');
     Route::post('login','Admin\LoginController@check')->name('admin.login');
-
     
     //退出登录
     Route::get('logout','Admin\LoginController@logout')->name('admin.logout');
     
     //受保护的后台路由列表
     Route::middleware(['adminLoginCheck'])->group(function(){
-    //后台中心首页
-    Route::get('index','Admin\IndexController@index')->name('admin.index');
+        //后台中心首页
+        Route::get('index','Admin\IndexController@index')->name('admin.index');
 
+        //管理员管理模块
+        Route::prefix('adminuser')->group(function(){
+            //列表
+            Route::get('/','Admin\AdminUserController@index')->name('admin.adminuser');
+
+            //添加、编辑共用
+            Route::get('add','Admin\AdminUserController@add')->name('admin.adminuser.add');
+            Route::post('add','Admin\AdminUserController@save')->name('admin.adminuser.add');
+
+            //软删除
+            Route::get('remove/{adminuser}','Admin\AdminUserController@remove')->name('admin.adminuser.remove');
+
+            //切换状态
+            Route::get('state/{adminuser}','Admin\AdminUserController@state')->name('admin.adminuser.state');
+
+
+
+         });
 
     });
 });
